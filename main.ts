@@ -360,13 +360,63 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile15, function (sprite, locatio
         game.over(false)
     }
 })
+function buildStartGame () {
+    tiles.setTilemap(tiles.createTilemap(
+            hex`100010000e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e120e0e0e0e0e0e0e0e0e0e0e0e130e0f0f0e13130e0e0e0e0e130e0e0f0f0f0e0e0e0f0f0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0e0e130e0e0e0e0e0e0e0e0e0e0e0e0e0e0f0f0f0e0e0f0f0e0e0e0e0e0e13130e0e0e0e0e0e0e0e0e0e0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0e0e13130e0e0e0e0e0e0e0f0f0e0e0e0e0f0f0f0e0e0e0e0e0e130e0e0e0e0e130e0e0e0e0e0e0e0e0f0f0f0e0e0e0f0f0e0e0e0e0e0e110e0e0e0e0e13130e0e0e0e0e0f0f0f10100e0e0e0e0f0f0e0e0e0e0e0e0e0e10100606060606060606060606060606`,
+            img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . 2 2 
+. . . . . . . . . . . 2 2 2 . . 
+. 2 2 . . . . 2 2 . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 2 . . 2 2 . . . . . 
+. . . . . . . . . . . . . . . . 
+. 2 2 . . . . . . . . . . 2 2 . 
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 . . . . 2 2 2 . . . 
+. . . . . . . . . . . . . . . . 
+. . 2 2 2 . . . 2 2 . . . . . . 
+. . . . . . . . . . . . . 2 2 2 
+2 2 . . . . 2 2 . . . . . . . . 
+2 2 . . . . . . . . . . . . . . 
+`,
+            [myTiles.tile0,sprites.builtin.brick,sprites.dungeon.doorClosedWest,sprites.dungeon.floorDark0,sprites.dungeon.floorLight2,sprites.dungeon.darkGroundCenter,myTiles.tile1,myTiles.tile2,sprites.dungeon.chestClosed,sprites.dungeon.stairLadder,sprites.builtin.forestTiles17,sprites.builtin.forestTiles22,sprites.dungeon.floorLight0,sprites.dungeon.floorDark2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile9,myTiles.tile10,myTiles.tile11,myTiles.tile12,myTiles.tile13,myTiles.tile14,myTiles.tile15,myTiles.tile16,myTiles.tile17,myTiles.tile18],
+            TileScale.Sixteen
+        ))
+    avatar = sprites.create(img`
+. . . . . . 5 . 5 . . . . . . . 
+. . . . . f 5 5 5 f f . . . . . 
+. . . . f 1 5 2 5 1 6 f . . . . 
+. . . f 1 6 6 6 6 6 1 6 f . . . 
+. . . f 6 6 f f f f 6 1 f . . . 
+. . . f 6 f f d d f f 6 f . . . 
+. . f 6 f d f d d f d f 6 f . . 
+. . f 6 f d 3 d d 3 d f 6 f . . 
+. . f 6 6 f d d d d f 6 6 f . . 
+. f 6 6 f 3 f f f f 3 f 6 6 f . 
+. . f f d 3 5 3 3 5 3 3 f f . . 
+. . f d f f 3 5 5 3 f d f . . . 
+. . . f f 3 3 3 3 3 f d f . . . 
+. . . f 3 3 5 3 3 5 3 f f . . . 
+. . . f f f f f f f f f . . . . 
+. . . . . f f . . . . . . . . . 
+`, SpriteKind.Player)
+    scene.cameraFollowSprite(avatar)
+    tiles.placeOnRandomTile(avatar, myTiles.tile6)
+    controller.moveSprite(avatar, 100, 0)
+    avatar.ay = 300
+    numJumps = 0
+    info.setScore(0)
+    info.startCountdown(30)
+}
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile13, function (sprite, location) {
     info.changeScoreBy(1)
     tiles.setTileAt(location, myTiles.tile11)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (numJumps < 2) {
-        avatar.vy = -200
+        avatar.vy = -125
         numJumps += 1
     }
 })
@@ -426,58 +476,8 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile7, function (sprite, location
         info.startCountdown(25)
     }
 })
-function buildStartGame () {
-    tiles.setTilemap(tiles.createTilemap(
-            hex`100010000e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e120e0e0e0e0e0e0e0e0e0e0e0e130e0f0f0e13130e0e0e0e0e130e0e0f0f0f0e0e0e0f0f0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0e0e130e0e0e0e0e0e0e0e0e0e0e0e0e0e0f0f0f0e0e0f0f0e0e0e0e0e0e13130e0e0e0e0e0e0e0e0e0e0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0f0f0e0e0e0e0e0e0e0e0e0e0e0e13130e0e0e0e0e0e0e0f0f0e0e0e0e0f0f0f0e0e0e0e0e0e130e0e0e0e0e130e0e0e0e0e0e0e0e0f0f0f0e0e0e0f0f0e0e0e0e0e0e110e0e0e0e0e13130e0e0e0e0e0f0f0f10100e0e0e0e0f0f0e0e0e0e0e0e0e0e10100606060606060606060606060606`,
-            img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . 2 2 
-. . . . . . . . . . . 2 2 2 . . 
-. 2 2 . . . . 2 2 . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 2 . . 2 2 . . . . . 
-. . . . . . . . . . . . . . . . 
-. 2 2 . . . . . . . . . . 2 2 . 
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 . . . . 2 2 2 . . . 
-. . . . . . . . . . . . . . . . 
-. . 2 2 2 . . . 2 2 . . . . . . 
-. . . . . . . . . . . . . 2 2 2 
-2 2 . . . . 2 2 . . . . . . . . 
-2 2 . . . . . . . . . . . . . . 
-`,
-            [myTiles.tile0,sprites.builtin.brick,sprites.dungeon.doorClosedWest,sprites.dungeon.floorDark0,sprites.dungeon.floorLight2,sprites.dungeon.darkGroundCenter,myTiles.tile1,myTiles.tile2,sprites.dungeon.chestClosed,sprites.dungeon.stairLadder,sprites.builtin.forestTiles17,sprites.builtin.forestTiles22,sprites.dungeon.floorLight0,sprites.dungeon.floorDark2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile9,myTiles.tile10,myTiles.tile11,myTiles.tile12,myTiles.tile13,myTiles.tile14,myTiles.tile15,myTiles.tile16,myTiles.tile17,myTiles.tile18],
-            TileScale.Sixteen
-        ))
-    avatar = sprites.create(img`
-. . . . . . 5 . 5 . . . . . . . 
-. . . . . f 5 5 5 f f . . . . . 
-. . . . f 1 5 2 5 1 6 f . . . . 
-. . . f 1 6 6 6 6 6 1 6 f . . . 
-. . . f 6 6 f f f f 6 1 f . . . 
-. . . f 6 f f d d f f 6 f . . . 
-. . f 6 f d f d d f d f 6 f . . 
-. . f 6 f d 3 d d 3 d f 6 f . . 
-. . f 6 6 f d d d d f 6 6 f . . 
-. f 6 6 f 3 f f f f 3 f 6 6 f . 
-. . f f d 3 5 3 3 5 3 3 f f . . 
-. . f d f f 3 5 5 3 f d f . . . 
-. . . f f 3 3 3 3 3 f d f . . . 
-. . . f 3 3 5 3 3 5 3 f f . . . 
-. . . f f f f f f f f f . . . . 
-. . . . . f f . . . . . . . . . 
-`, SpriteKind.Player)
-    scene.cameraFollowSprite(avatar)
-    tiles.placeOnRandomTile(avatar, myTiles.tile6)
-    controller.moveSprite(avatar, 100, 0)
-    avatar.ay = 400
-    numJumps = 0
-    info.setScore(0)
-    info.startCountdown(30)
-}
-let avatar: Sprite = null
 let numJumps = 0
+let avatar: Sprite = null
 scene.setBackgroundImage(img`
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
